@@ -9,11 +9,12 @@
         <template v-if="true">
           <li><a href="javascript:;"><i class="iconfont icon-user"></i>周杰伦</a></li>
           <li>
-            <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
-              <template #reference>
+            <!-- <el-popconfirm @onConfirm="confirm" title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消"> --> -->
+              <!-- <template #reference>  -->
+              <template>
                 <a href="javascript:;">退出登录</a>
               </template>
-            </el-popconfirm>
+            <!-- </el-popconfirm> -->
           </li>
           <li><a href="javascript:;">我的订单</a></li>
           <li><a href="javascript:;">会员中心</a></li>
@@ -27,6 +28,7 @@
     </div>
   </nav>
 </template>
+
 
 <style scoped lang="scss">
 .app-topnav {
@@ -48,9 +50,9 @@
           margin-right: 2px;
         }
 
-        // &:hover {
-        //   color: $xtxColor;
-        // }
+        &:hover {
+          color: $xtxColor;
+        }
       }
 
       ~li {
@@ -61,4 +63,4 @@
     }
   }
 }
-</style> 
+</style>
