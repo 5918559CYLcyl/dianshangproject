@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import  {getCategoryAPI} from '@/apis/layout'
+import { getCategoryAPI } from '@/apis/layout'
 
 export const useCategoryStore = defineStore('category', () => {
   const categoryList=ref([])
@@ -9,9 +9,9 @@ export const useCategoryStore = defineStore('category', () => {
   console.log(res)
   categoryList.value=res.result
 }
-// return {
-//   categoryList,
-//   getCategory
-// }
+return {
+  categoryList,
+  getCategory
+}
     
 })
