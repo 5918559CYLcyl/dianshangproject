@@ -1,4 +1,5 @@
 <script setup>
+import {onMounted,ref} from 'vue'
 import {getCategoryAPI} from '@/apis/layout'
 const categoryList=ref([])
 const getCategory =async()=>{
