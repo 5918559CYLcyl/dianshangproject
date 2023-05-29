@@ -1,5 +1,7 @@
 <script setup>
 // 图片列表
+import {ref} from 'vue'
+import {useMouseInElement} from '@/vueuse/core'
 const imageList = [
   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
   "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
@@ -12,10 +14,38 @@ const activeIndex=ref(0)
 const enterhandler=(i)=>{
     activeIndex.value=i
 }
+
+const target=ref(null)
+const { elementX,elementY,isOutside}=useMouseInElement(target)
+const left=ref(0)
+const top=ref(0)
+watch([elementX,elementY],()=>{
+    if(elementX.value>100&&elementX.value<300){
+        left.value=elementX.value-100
+    }
+    if(elementY.value>100&&elementY.value<300){
+        top.value=elementY.value-100
+    }
+    if(elementX>300){
+        left.value=200
+    }
+    if(elementX<100){
+        left.value=0
+    }
+    if(elementY>300){
+        top.value=200
+    }
+    if(elementY<100){
+        top.value=0
+    }
+
+
+})
 </script>
 
 
 <template>
+{{ elementX}},{{elementY}},{{isOutside}}
   <div class="goods-image">
     <!-- 左侧大图-->
     <div class="middle" ref="target">
