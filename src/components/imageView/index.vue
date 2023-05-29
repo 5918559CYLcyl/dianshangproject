@@ -1,73 +1,76 @@
 <script setup>
+import { ref, watch } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
+
 // 图片列表
-import {ref} from 'vue'
-import {useMouseInElement} from '@/vueuse/core'
+const imageList = [
+  "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
+  "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
+  "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
+  "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
+  "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
+]
 
-defineProps({
-    imageList:{
-        type:Array,
-        default:()=>[]
-    }
-})
-// const imageList = [
-//   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
-//   "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
-//   "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
-//   "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
-//   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
-// ]
+// 1.小图切换大图显示
+const activeIndex = ref(0)
 
-const activeIndex=ref(0)
-const enterhandler=(i)=>{
-    activeIndex.value=i
+const enterhandler = (i) => {
+  activeIndex.value = i
 }
 
-const target=ref(null)
-const { elementX,elementY,isOutside}=useMouseInElement(target)
-const left=ref(0)
-const top=ref(0)
-const positionX=ref(0)
-const positionY=ref(0)
+// 2. 获取鼠标相对位置
+const target = ref(null)
+const { elementX, elementY, isOutside } = useMouseInElement(target)
 
-watch([elementX,elementY,isOutside],()=>{
-    if(isOutside.value) return 
-    if(elementX.value>100&&elementX.value<300){
-        left.value=elementX.value-100
-    }
-    if(elementY.value>100&&elementY.value<300){
-        top.value=elementY.value-100
-    }
-    if(elementX>300){
-        left.value=200
-    }
-    if(elementX<100){
-        left.value=0
-    }
-    if(elementY>300){
-        top.value=200
-    }
-    if(elementY<100){
-        top.value=0
-    }
-    positionX.value=-left.value*2
-    positionY.value=-top.value*2
+// 3. 控制滑块跟随鼠标移动（监听elementX/Y变化，一旦变化 重新设置left/top）
+const left = ref(0)
+const top = ref(0)
+
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX, elementY, isOutside], () => {
+
+  // 如果鼠标没有移入到盒子里面 直接不执行后面的逻辑
+  if (isOutside.value) return
+
+  // 有效范围内控制滑块距离
+  // 横向
+  if (elementX.value > 100 && elementX.value < 300) {
+    left.value = elementX.value - 100
+  }
+  // 纵向
+  if (elementY.value > 100 && elementY.value < 300) {
+    top.value = elementY.value - 100
+  }
+
+  // 处理边界
+  if (elementX.value > 300) { left.value = 200 }
+  if (elementX.value < 100) { left.value = 0 }
+
+  if (elementY.value > 300) { top.value = 200 }
+  if (elementY.value < 100) { top.value = 0 }
+
+  // 控制大图的显示
+  positionX.value = -left.value * 2
+  positionY.value = -top.value * 2
 
 })
+
 </script>
 
 
 <template>
-{{ elementX}},{{elementY}},{{isOutside}}
   <div class="goods-image">
+
     <!-- 左侧大图-->
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" v-show="!isOutside" :style="{ left: `0px`, top: `0px` }"></div>
+      <div class="layer" v-show="!isOutside" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
-      <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)" :class="{active:i===activeIndex}">
+      <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)" :class="{ active: i === activeIndex }">
         <img :src="img" alt="" />
       </li>
     </ul>
