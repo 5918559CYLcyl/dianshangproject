@@ -1,8 +1,15 @@
 <script setup>
 import {ref} from 'vue'
+
+import {ElMessage} from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import {useUserStore} from '@/stores/user'
+import {useRouter} from 'vue-router'
+const userStore=useUserStore()
+
 const form=ref({
-    acount:'',
-    password:'',
+    acount:'18610848230',
+    password:'123456',
     agree:true
 })
 const rules={
@@ -14,7 +21,7 @@ const rules={
             required:true,message:'密码不能为空',trigger:'blur'
         },
         {
-           min:6,max:14,message:'密码不能为空',trigger:'blur'
+           min:6,max:14,message:'密码长度为6-14个字符',trigger:'blur'
         }
     ],
     agree:[
@@ -32,10 +39,14 @@ const rules={
 }
 
 const formRef=ref(null)
+const router=useRouter()
 const doLogin=()=>{
-    formRef.value.validate((valid)=>{
+    const {account,password}=form.value
+    formRef.value.validate(async(valid)=>{
         if(valid){
-            
+            await userStore.getUserInfo({account,password})
+            ElMessage({type:'success',message:'登陆成功'})
+            router.replace({path:'/'})
         }
     })
 }
