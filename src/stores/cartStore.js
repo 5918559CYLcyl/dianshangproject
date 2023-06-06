@@ -71,7 +71,8 @@ const updateNewList=()=>{
         clearCart,
         addCart,
         delCart,
-        isAll
+        isAll,
+        updateNewList
     }
 },{
     persist:true,
