@@ -1,7 +1,7 @@
 <script setup>
 import {useCategoryStore} from '@/stores/category'
 const categoryStore = useCategoryStore()
-
+import HeaderCart from './HeaderCart.vue'
 </script>
 
 <template>
