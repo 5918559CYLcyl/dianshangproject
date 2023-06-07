@@ -2,7 +2,7 @@ import { menuItemEmits } from 'element-plus'
 import {defineStore} from 'pinia'
 import {computed, ref} from 'vue'
 import {useUserStore} from './userStore'
-import {insertCartAPI,findNewCartListAPI,delCartAPI} from '@/apis/cart'
+import {insertCartAPI, findNewCartListAPI, delCartAPI} from '@/apis/cart'
 export const useCartStore=defineStore('cart',()=>{
     const userStore=useUserStore()
     const isLogin=computed(()=>userStore.userInfo.token)
@@ -39,7 +39,7 @@ const clearCart=()=>{
     cartList.value=[]
 }
 //获取最新购物车列表action
-const updateNewList=()=>{
+const updateNewList=async()=>{
     const res=await findNewCartListAPI()
     cartList.value=res.result
 }

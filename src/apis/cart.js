@@ -13,14 +13,14 @@ export const insertCartAPI=({skuId,count})=>{
 }
 
 
-const findNewCartListAPI=()=>{
+export const findNewCartListAPI=()=>{
     return request({
         url:'/member/cart'
 
     })
 }
 //删除购物车
-export const delCartList=()=>{
+export const delCartAPI=()=>{
     return request({
         url:'/member/cart',
         method:'DELETE',
